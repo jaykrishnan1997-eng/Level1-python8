@@ -1,0 +1,12 @@
+ check if pandas installed
+ check if numpy installed
+ check if requests installed
+ check if matplotlib installed
+ print version if installed
+ print install instructions if missing
+ generate data with numpy
+ analyze with pandas
+ plot with matplotlib
+ save to png
+ write requirements.txt
+ write pyproject.toml

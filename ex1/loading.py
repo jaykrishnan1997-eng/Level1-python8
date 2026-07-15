@@ -7,7 +7,7 @@
 #   By: jkrishna <jkrishna@student.42.fr>            +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/07/07 15:22:12 by jkrishna            #+#    #+#            #
-#   Updated: 2026/07/07 16:08:50 by jkrishna           ###   ########.fr      #
+#   Updated: 2026/07/15 14:09:44 by jkrishna           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -20,21 +20,26 @@ def check_package(name):
 
 
 def check_dependencies():
-    if check_package("pandas"):
-        import pandas
-        print(f"[OK] pandas ({pandas.__version__}) -  Data manipulation ready")
+    packages = {
+        "pandas": "Data manipulation",
+        "numpy": "Numerical computation",
+        "requests": "Network access",
+        "matplotlib": "Visualization",
+    }
+    status = {}
+    for name in packages.keys():
+        if check_package(name):
+            module = importlib.import_module(name)
+            version = module.__version__
+            status[name] = "OK"
+        else:
+            status[name] = "KO"
 
-    if check_package("numpy"):
-        import numpy
-        print(f"[OK] numpy ({numpy.__version__}) - Numerical computation ready")
-
-    if check_package("requests"):
-        import requests
-        print(f"[OK] requests ({requests.__version__}) - Network access ready")
-
-    if check_package("matplotlib"):
-        import matplotlib
-        print(f"[OK] matplotlib ({matplotlib.__version__}) - Visualization ready")
+    for name in packages.keys():
+        if status[name] == "OK":
+            print(f"[OK] {name} {version} {packages[name]} ready")
+        else:
+            print(f"[KO] {name} is not installed")
 
 
 if __name__ == "__main__":

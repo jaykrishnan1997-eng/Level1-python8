@@ -7,12 +7,13 @@
 #   By: jkrishna <jkrishna@student.42.fr>            +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/07/06 11:12:18 by jkrishna            #+#    #+#            #
-#   Updated: 2026/07/06 16:07:09 by jkrishna           ###   ########.fr      #
+#   Updated: 2026/07/15 13:29:24 by jkrishna           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
 import sys
 import os
+import site
 
 if __name__ == "__main__":
     if sys.prefix != sys.base_prefix:
@@ -24,10 +25,11 @@ if __name__ == "__main__":
         print("SUCCESS: You're in an isolated environment!")
         print("Safe to install packages without affecting")
         print("the global system.")
-        py_v = f"python{sys.version_info.major}.{sys.version_info.minor}"
-        package_path = os.path.join(sys.prefix, "lib", py_v, "site-packages")
+        # py_v = f"python{sys.version_info.major}.{sys.version_info.minor}"
+        # package_path = os.path.join(sys.prefix, "lib", py_v, "site-packages")
         print("Package installation path:")
-        print(f"{package_path}")
+        # print(f"{package_path}")
+        print(site.getsitepackages()[0])
     else:
         print("\nMATRIX STATUS: You're still plugged in\n")
         print(f"Current Python: {sys.executable}")

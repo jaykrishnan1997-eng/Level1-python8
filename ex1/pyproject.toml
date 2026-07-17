@@ -5,13 +5,17 @@ description = ""
 authors = [
     {name = "Jay Krishnan",email = "jkrishna@student.42heilbronn.de"}
 ]
-readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "pandas>=2.3.3",
+    "numpy>=2.2.6",
+    "matplotlib>=3.10.9",
+    "requests>=2.34.2",
+    "python-dotenv"
 ]
 
 [tool.poetry]
-packages = [{include = "myproject", from = "src"}]
+package-mode = false
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

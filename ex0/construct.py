@@ -15,7 +15,7 @@ import sys
 import os
 import site
 
-if __name__ == "__main__":
+def main() -> None:
     if sys.prefix != sys.base_prefix:
         print("MATRIX STATUS: Welcome to the construct")
         print(f"Current Python: {sys.executable}")
@@ -41,3 +41,13 @@ if __name__ == "__main__":
         print("source matrix_env/bin/activate # On Unix")
         print(r"matrix_env\Scripts\activate # On Windows\n")
         print("Then run this program again.")
+
+
+if __name__ == "__main__":
+    main()
+#
+# python3 -m venv .venv — creates the venv
+# source .venv/bin/activate.fish — activates it (fish-specific)
+# pip install -r requirements.txt — installs ex1's deps
+# deactivate — leaves the venv
+# rm -rf .venv — cleans it up

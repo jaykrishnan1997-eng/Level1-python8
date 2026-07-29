@@ -10,10 +10,12 @@ except ImportError:
 
 load_dotenv()
 
-KEYS = ["MATRIX_MODE", "DATABASE_URL", "API_KEY", "LOG_LEVEL", "ZION_ENDPOINT"]
-
 
 def _get_config() -> tuple[dict[str, str | None], list[str]]:
+    KEYS = [
+        "MATRIX_MODE", "DATABASE_URL",
+        "API_KEY", "LOG_LEVEL", "ZION_ENDPOINT"
+    ]
     config: dict[str, str | None] = {}
     warnings: list[str] = []
     for key in KEYS:

@@ -7,13 +7,14 @@
 #   By: jkrishna <jkrishna@student.42.fr>            +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/07/06 11:12:18 by jkrishna            #+#    #+#            #
-#   Updated: 2026/07/15 13:29:24 by jkrishna           ###   ########.fr      #
+#   Updated: 2026/07/29 10:48:26 by jkrishna           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
 import sys
 import os
 import site
+
 
 def main() -> None:
     if sys.prefix != sys.base_prefix:

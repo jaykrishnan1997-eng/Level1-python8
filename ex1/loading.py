@@ -7,7 +7,7 @@
 #   By: jkrishna <jkrishna@student.42.fr>            +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/07/07 15:22:12 by jkrishna            #+#    #+#            #
-#   Updated: 2026/07/17 14:32:05 by jkrishna           ###   ########.fr      #
+#   Updated: 2026/07/29 11:03:50 by jkrishna           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -15,7 +15,7 @@ import importlib.util
 import sys
 
 
-def check_package(name):
+def check_package(name: str) -> bool:
     spec = importlib.util.find_spec(name)
     return spec is not None
 
@@ -34,7 +34,7 @@ def check_dependencies() -> bool:
         if check_package(name):
             try:
                 module = importlib.import_module(name)
-                versions[name] = getattr(module,"__version__", "unknown")
+                versions[name] = getattr(module, "__version__", "unknown")
                 status[name] = "OK"
             except Exception as e:
                 status[name] = "KO"
@@ -54,8 +54,13 @@ def check_dependencies() -> bool:
     return True
 
 
-def generating_vis(lat=48.7758, lon=9.1829, location_name="Stuttgart"):
+def generating_vis(
+    lat: float = 48.7758,
+    lon: float = 9.1829,
+    location_name: str = "Stuttgart"
+) -> str:
     import requests
+    import numpy as np
     import matplotlib.pyplot as plt
 
     URL = (
@@ -70,9 +75,9 @@ def generating_vis(lat=48.7758, lon=9.1829, location_name="Stuttgart"):
 
     data = response.json()["daily"]
     dates = data["time"]
-    max_temp = data["temperature_2m_max"]
-    min_temp = data["temperature_2m_min"]
-    avg_temp = [(max + min) / 2 for max, min in zip(max_temp, min_temp)]
+    max_temp = np.array(data["temperature_2m_max"])
+    min_temp = np.array(data["temperature_2m_min"])
+    avg_temp = np.mean(np.vstack([max_temp, min_temp]), axis=0)
 
     fig, ax = plt.subplots(figsize=(9, 5))
     ax.plot(dates, avg_temp, marker="o", color="tab:orange")
@@ -87,9 +92,10 @@ def generating_vis(lat=48.7758, lon=9.1829, location_name="Stuttgart"):
     out_path = "weather_forecast.png"
     plt.savefig(out_path, dpi=150)
     print(f"[OK] saved plot to {out_path}")
-    return out_path       
+    return out_path
 
-def main():
+
+def main() -> None:
     print("LOADING STATUS: Loading programs...\n")
     print("Checking dependencies:")
     if check_dependencies() is False:
@@ -102,3 +108,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+# python3 -m pip install types-requests

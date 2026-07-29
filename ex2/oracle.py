@@ -1,5 +1,12 @@
 import os
-from dotenv import load_dotenv
+import sys
+
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    print("[KO] python-dotenv is not installed.")
+    print("To install, use: 'pip install python-dotenv'")
+    sys.exit(1)
 
 load_dotenv()
 

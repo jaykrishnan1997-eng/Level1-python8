@@ -7,7 +7,7 @@
 #   By: jkrishna <jkrishna@student.42.fr>            +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/07/07 15:22:12 by jkrishna            #+#    #+#            #
-#   Updated: 2026/07/29 11:03:50 by jkrishna           ###   ########.fr      #
+#   Updated: 2026/07/29 12:35:23 by jkrishna           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -61,6 +61,7 @@ def generating_vis(
 ) -> str:
     import requests
     import numpy as np
+    import pandas as pd
     import matplotlib.pyplot as plt
 
     URL = (
@@ -69,18 +70,27 @@ def generating_vis(
         "&daily=temperature_2m_max,temperature_2m_min"
         "&timezone=auto"
     )
-
-    response = requests.get(URL, timeout=10)
-    response.raise_for_status()
+    try:
+        response = requests.get(URL, timeout=10)
+        response.raise_for_status()
+    except Exception as e:
+        print(
+            "There was an error either in fetching the url"
+            f" or in the input you provided for generating_vis: {e}"
+        )
+        return ""
 
     data = response.json()["daily"]
-    dates = data["time"]
-    max_temp = np.array(data["temperature_2m_max"])
-    min_temp = np.array(data["temperature_2m_min"])
-    avg_temp = np.mean(np.vstack([max_temp, min_temp]), axis=0)
-
+    df = pd.DataFrame({
+        "date": data["time"],
+        "temp_max": data["temperature_2m_max"],
+        "temp_min": data["temperature_2m_min"],
+    })
+    max_temp = np.array(df["temp_max"])
+    min_temp = np.array(df["temp_min"])
+    df["avg_temp"] = np.mean(np.vstack([max_temp, min_temp]), axis=0)
     fig, ax = plt.subplots(figsize=(9, 5))
-    ax.plot(dates, avg_temp, marker="o", color="tab:orange")
+    ax.plot(df["date"], df["avg_temp"], marker="o", color="tab:orange")
     ax.set_ylabel("Average Temperature (°C)")
     ax.set_xlabel("Date")
     ax.set_title(f"Average daily temperature - {location_name}")
@@ -103,9 +113,13 @@ def main() -> None:
         sys.exit(1)
 
     print("\nGenerating weather visualization:")
-    generating_vis()
+    result = generating_vis()
+    if not result:
+        print("Visualization failed.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
     main()
 # python3 -m pip install types-requests
+# pip uninstall requests pandas numpy matplotlib -y
